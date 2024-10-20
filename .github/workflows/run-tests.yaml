@@ -1,0 +1,57 @@
+name: Run tests
+
+on:
+  # Run when a release is published
+  # release:
+  #   types:
+  #     - published
+
+  # Allow for manual trigger for now
+  workflow_dispatch:
+
+jobs:
+  generate-docs:
+    name: Run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+          
+      - name: Install Roc
+        uses: hasnep/setup-roc@main
+        with:
+          roc-version: nightly
+            
+      - name: Build Roc app
+        run: roc build tests.roc
+      
+      # Get the browser version - it will be used as a cache key to store downloaded browser and driver
+      - name: Generate browser files cache key
+        id: cache-key
+        run: ./tests --print-browser-version-only
+
+      # Restore cached browser and driver data using the save browser version as a key
+      - name: Restore browser files cache
+        uses: actions/cache@v3
+        with:
+          path: ./browser_files
+          key: ${{ steps.cache-key.outputs.key }}
+
+      # Setup browser and driver - setup will be skiped if browser files exist
+      - name: Setup browser and driver
+        run: ./tests --setup
+
+      - name: Save browser files cache 
+        uses: actions/cache@v3
+        with: 
+          path: ./browser_files
+          key: ${{ steps.cache-key.outputs.key }}
+          
+      - name: Run roc tests
+        run: ./tests --headless
+          
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: testResults/
