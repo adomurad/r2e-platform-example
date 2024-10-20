@@ -1,4 +1,4 @@
-app [testCases] { r2e: platform "https://github.com/adomurad/r2e-platform/releases/download/0.3.0/uIrpPhFiljl5kUFAsXtj62LkbLyUmWQaQHfi87-ugZk.tar.br" }
+app [testCases] { r2e: platform "https://github.com/adomurad/r2e-platform/releases/download/0.3.1/AcGBsqyc8iIUol_VRTRXPWNcLlDtGuje7WbMn_NdNXs.tar.br" }
 
 # import r2e.Console
 import r2e.Test exposing [test]
