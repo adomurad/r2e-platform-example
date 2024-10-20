@@ -26,6 +26,7 @@ jobs:
         uses: actions/cache@v3 
         with: 
           path: /home/runner/.cache/roc/packages
+          key: "roc-packages"
             
       - name: Build Roc app
         run: roc build tests.roc
