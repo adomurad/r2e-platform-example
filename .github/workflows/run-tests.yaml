@@ -19,6 +19,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
           
+      # Install Roc <3
       - name: Install Roc
         uses: hasnep/setup-roc@main
         with:
@@ -46,7 +47,7 @@ jobs:
       # Restore cached browser and driver data using the save browser version as a key
       - name: Restore browser files cache
         uses: actions/cache@v4
-        if: always()
+        # post-if: always()
         with:
           path: ./browser_files
           key: ${{ steps.cache-key.outputs.key }}
@@ -55,21 +56,23 @@ jobs:
       - name: Setup browser and driver
         run: ./tests --setup
 
+      - name: Save browser files cache
+        uses: actions/cache/save@v4 
+        with:
+          path: ./browser_files
+          key: ${{ steps.cache-key.outputs.key }}
+        
+
       # Run tests
       - name: Run roc tests
         id: test-run
-        # continue-on-error: true
         run: ./tests --headless
           
-      - name: Upload docs artifact
+      # Store the results in artifacts
+      - name: Upload test results artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: results
           path: testResults/
-
-      # # Fail the job then the test run failed
-      # - name: Check test results
-      #   if: steps.test-run.outcome != 'success'
-      #   run: exit 1
 
