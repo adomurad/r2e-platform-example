@@ -21,6 +21,11 @@ jobs:
         uses: hasnep/setup-roc@main
         with:
           roc-version: nightly
+
+      - name: Restore roc packages 
+        uses: actions/cache@v3 
+        with: 
+          path: /home/runner/.cache/roc/packages
             
       - name: Build Roc app
         run: roc build tests.roc

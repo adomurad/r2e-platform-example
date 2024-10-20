@@ -18,4 +18,4 @@ test1 = test "inputText {enter}" \browser ->
 
     thankYouHeader = browser |> Browser.findElement! (TestId "thank-you-header")
     text = thankYouHeader |> Element.getText!
-    text |> Assert.shouldBe "Thank you test"
+    text |> Assert.shouldBe "Thank you test 2"
