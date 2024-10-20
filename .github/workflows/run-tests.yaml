@@ -69,6 +69,6 @@ jobs:
 
       # Fail the job then the test run failed
       - name: Check test results
-        if: steps.test-run.outcome != "success"
+        if: steps.test-run.outcome != 'success'
         run: exit 1
 
