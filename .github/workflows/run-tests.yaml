@@ -10,9 +10,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-docs:
+  tests:
     name: Run tests
     runs-on: ubuntu-latest
+    outputs:
+      actualResult: ${{ steps.test-run.outcome }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
@@ -22,6 +24,7 @@ jobs:
         with:
           roc-version: nightly
 
+      # Restore cached roc packages
       - name: Restore roc packages 
         uses: actions/cache@v3 
         with: 
@@ -50,13 +53,10 @@ jobs:
       - name: Setup browser and driver
         run: ./tests --setup
 
-      # - name: Save browser files cache 
-      #   uses: actions/cache@v3
-      #   with: 
-      #     path: ./browser_files
-      #     key: ${{ steps.cache-key.outputs.key }}
-          
+      # Run tests
       - name: Run roc tests
+        id: test-run
+        continue-on-error: true
         run: ./tests --headless
           
       - name: Upload docs artifact
@@ -64,3 +64,4 @@ jobs:
         with:
           name: results
           path: testResults/
+
