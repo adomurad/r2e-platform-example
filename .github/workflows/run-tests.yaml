@@ -17,19 +17,20 @@ jobs:
       actualResult: ${{ steps.test-run.outcome }}
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
           
       - name: Install Roc
         uses: hasnep/setup-roc@main
         with:
           roc-version: nightly
 
-      # Restore cached roc packages
-      - name: Restore roc packages 
-        uses: actions/cache@v3 
-        with: 
-          path: /home/runner/.cache/roc/packages
-          key: "roc-packages"
+      # TODO this could work if roc could generate a hash of all used dependencies
+      # # Restore cached roc packages
+      # - name: Restore roc packages 
+      #   uses: actions/cache@v3 
+      #   with: 
+      #     path: /home/runner/.cache/roc/packages
+      #     key: "roc-packages"
             
       - name: Build Roc app
         run: roc build tests.roc
@@ -44,7 +45,7 @@ jobs:
 
       # Restore cached browser and driver data using the save browser version as a key
       - name: Restore browser files cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./browser_files
           key: ${{ steps.cache-key.outputs.key }}
@@ -56,12 +57,18 @@ jobs:
       # Run tests
       - name: Run roc tests
         id: test-run
-        continue-on-error: true
+        # continue-on-error: true
         run: ./tests --headless
           
       - name: Upload docs artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: results
           path: testResults/
+
+      # Fail the job then the test run failed
+      - name: Check test results
+        if: steps.test-run.outcome != "success"
+        run: exit 1
 
