@@ -28,7 +28,10 @@ jobs:
       # Get the browser version - it will be used as a cache key to store downloaded browser and driver
       - name: Generate browser files cache key
         id: cache-key
-        run: ./tests --print-browser-version-only
+        run: |
+          key=$(./tests --print-browser-version-only)
+          echo "Cache key: $key"
+          echo "::set-output name=key::$key"
 
       # Restore cached browser and driver data using the save browser version as a key
       - name: Restore browser files cache
