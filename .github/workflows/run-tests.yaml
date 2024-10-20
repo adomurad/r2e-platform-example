@@ -31,7 +31,7 @@ jobs:
         run: |
           key=$(./tests --print-browser-version-only)
           echo "Cache key: $key"
-          echo "::set-output name=key::$key"
+          echo "key=$key" >> $GITHUB_OUTPUT
 
       # Restore cached browser and driver data using the save browser version as a key
       - name: Restore browser files cache
@@ -44,11 +44,11 @@ jobs:
       - name: Setup browser and driver
         run: ./tests --setup
 
-      - name: Save browser files cache 
-        uses: actions/cache@v3
-        with: 
-          path: ./browser_files
-          key: ${{ steps.cache-key.outputs.key }}
+      # - name: Save browser files cache 
+      #   uses: actions/cache@v3
+      #   with: 
+      #     path: ./browser_files
+      #     key: ${{ steps.cache-key.outputs.key }}
           
       - name: Run roc tests
         run: ./tests --headless
