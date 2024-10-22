@@ -47,7 +47,7 @@ jobs:
       # Restore cached browser and driver data using the save browser version as a key
       - name: Restore browser files cache
         uses: actions/cache@v4
-        # post-if: always()
+        # TODO the browser files are only cached if the test run succeeds
         with:
           path: ./browser_files
           key: ${{ steps.cache-key.outputs.key }}
@@ -55,13 +55,6 @@ jobs:
       # Setup browser and driver - setup will be skiped if browser files exist
       - name: Setup browser and driver
         run: ./tests --setup
-
-      - name: Save browser files cache
-        uses: actions/cache/save@v4 
-        with:
-          path: ./browser_files
-          key: ${{ steps.cache-key.outputs.key }}
-        
 
       # Run tests
       - name: Run roc tests
