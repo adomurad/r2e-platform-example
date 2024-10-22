@@ -28,4 +28,4 @@ roc ./tests.roc --debug
 ## Results
 
 See example test results in:
-[](./exampleTestResults/basicHtmlReporter/index.html)
+[./exampleTestResults/basicHtmlReporter/index.html](./exampleTestResults/basicHtmlReporter/index.html)
