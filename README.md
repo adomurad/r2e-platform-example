@@ -28,4 +28,4 @@ roc ./tests.roc --debug
 ## Results
 
 See example test results in:
-[./exampleTestResults/basicHtmlReporter/index.html](./exampleTestResults/basicHtmlReporter/index.html)
+[index.html](https://htmlpreview.github.io/?https://github.com/adomurad/r2e-platform-example/blob/main/exampleTestResults/basicHtmlReporter/index.html)
