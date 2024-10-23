@@ -9,47 +9,62 @@ import r2e.Assert
 testCases = [
     test1,
     test2,
+    test3,
 ]
 
-test1 = test "find roc in google" \browser ->
-    # open google
-    browser |> Browser.navigateTo! "http://google.com"
-    # find cookie confirm button
-    button = browser |> Browser.findElement! (Css "#L2AGLb")
-    # confirm cookies
-    button |> Element.click!
-    # find search input
-    searchInput = browser |> Browser.findElement! (Css ".gLFyf")
-    # search for "roc lang"
-    searchInput |> Element.inputText! "roc lang{enter}"
-    # wait for demo purpose
-    Debug.wait! 500
-    # find all search results
-    searchResults = browser |> Browser.findElements! (Css ".yuRUbf h3")
-    # get first result
-    firstSearchResult = searchResults |> List.first |> Task.fromResult!
-    # click on first result
-    firstSearchResult |> Element.click!
-    # wait for demo purpose
-    Debug.wait! 1000
-    # find header text
-    header = browser |> Browser.findElement! (Css "#homepage-h1")
-    # get header text
-    headerText = header |> Element.getText!
-    # check text
-    headerText |> Assert.shouldBe! "Roc"
+test1 = test "fill out a fake form" \browser ->
+    # open the test page
+    browser |> Browser.navigateTo! "https://adomurad.github.io/e2e-test-page/"
+    # find the framework name input by data-testid
+    frameworkInput = browser |> Browser.findElement! (TestId "framework-name")
+    # send text to input
+    frameworkInput |> Element.inputText! "R2E Platform"
+    # find the test count input by id
+    testCountInput = browser |> Browser.findElement! (Css "#testCount")
+    # send text to input
+    testCountInput |> Element.inputText! "55"
+    # find the checkbox
+    isProductionCheckbox = browser |> Browser.findElement! (TestId "isProduction")
+    # click the checkbox
+    isProductionCheckbox |> Element.click!
+    # find the submit button
+    submitButton = browser |> Browser.findElement! (Css "#submit-button")
+    # click the submit button
+    submitButton |> Element.click!
+    # the page title should have changed
+    browser |> Assert.titleShouldBe! "E2E Testing - Summary Page"
+    # find the summary page header
+    summaryHeader = browser |> Browser.findElement! (TestId "summary-header")
+    # the header should be "Thank You!"
+    summaryHeader |> Assert.elementShouldHaveText! "Thank You!"
 
-test2 = test "use roc repl" \browser ->
+test2 = test "test form validation" \browser ->
+    # open the test page
+    browser |> Browser.navigateTo! "https://adomurad.github.io/e2e-test-page/"
+    # find the test count input by id
+    testCountInput = browser |> Browser.findElement! (Css "#testCount")
+    # send text to input
+    testCountInput |> Element.inputText! "2"
+    # find the submit button
+    submitButton = browser |> Browser.findElement! (Css "#submit-button")
+    # click the submit button
+    submitButton |> Element.click!
+    # wait for the error message to become visible
+    Debug.wait! 200 # TODO - asserts in R2E will handle in platform
+    # find the error message
+    testCountError = browser |> Browser.findElement! (TestId "testCountError")
+    # check the error message text
+    testCountError |> Assert.elementShouldHaveText! "At least 5 tests are required"
+
+test3 = test "use roc repl" \browser ->
     # go to roc-lang.org
     browser |> Browser.navigateTo! "http://roc-lang.org"
     # find repl input
     replInput = browser |> Browser.findElement! (Css "#source-input")
     # wait for the repl to initialize
-    Debug.wait! 100
+    Debug.wait! 200
     # send keys to repl
     replInput |> Element.inputText! "0.1+0.2{enter}"
-    # wait for demo purpose
-    Debug.wait! 2000
     # find repl output element
     outputEl = browser |> Browser.findElement! (Css ".output")
     # get output text
