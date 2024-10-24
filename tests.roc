@@ -1,10 +1,13 @@
-app [testCases] { r2e: platform "https://github.com/adomurad/r2e-platform/releases/download/0.5.0/b0mNSQVGQeCxZY-pXFxasKCNf8aB2899UBwnwbqNV9Y.tar.br" }
+app [testCases, config] { r2e: platform "https://github.com/adomurad/r2e-platform/releases/download/0.6.0/7vFDzZ7T9Thdkgwhl3jRVJyQBNUPm1tDIqeEc5RhRnI.tar.br" }
 
 import r2e.Test exposing [test]
+import r2e.Config
 import r2e.Debug
 import r2e.Browser
 import r2e.Element
 import r2e.Assert
+
+config = Config.defaultConfig
 
 testCases = [
     test1,
