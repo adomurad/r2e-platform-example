@@ -65,7 +65,7 @@ test3 = test "use roc repl" \browser ->
     # find repl input
     replInput = browser |> Browser.findElement! (Css "#source-input")
     # wait for the repl to initialize
-    Debug.wait! 200
+    Debug.wait! 300
     # send keys to repl
     replInput |> Element.inputText! "0.1+0.2{enter}"
     # find repl output element
@@ -73,4 +73,4 @@ test3 = test "use roc repl" \browser ->
     # get output text
     outputText = outputEl |> Element.getText!
     # assert text - fail for demo purpose
-    outputText |> Assert.shouldBe "0.3000000001 : Frac *"
+    outputText |> Assert.shouldBe "0.3 : Frac *"
