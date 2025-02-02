@@ -57,8 +57,6 @@ test2 = test(
         submit_button = browser |> Browser.find_element!(Css("#submit-button"))?
         # click the submit button
         submit_button |> Element.click!()?
-        # wait for the error message to become visible
-        Debug.wait!(200) # TODO - asserts in R2E will handle in platform
         # find the error message
         test_count_error = browser |> Browser.find_element!(TestId("testCountError"))?
         # check the error message text
@@ -80,6 +78,6 @@ test3 = test(
         output_el = browser |> Browser.find_element!(Css(".output"))?
         # get output text
         output_text = output_el |> Element.get_text!()?
-        # assert text - fail for demo purpose
-        output_text |> Assert.should_be("0.3000000001 : Frac *"),
+        # assert text
+        output_text |> Assert.should_be("0.3 : Frac *"),
 )
