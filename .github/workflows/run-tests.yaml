@@ -12,13 +12,13 @@ on:
 jobs:
   tests:
     name: Run tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       actualResult: ${{ steps.test-run.outcome }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
-          
+
       # Install Roc <3
       - name: Install Roc
         uses: hasnep/setup-roc@main
@@ -27,15 +27,15 @@ jobs:
 
       # TODO this could work if roc could generate a hash of all used dependencies
       # # Restore cached roc packages
-      # - name: Restore roc packages 
-      #   uses: actions/cache@v3 
-      #   with: 
+      # - name: Restore roc packages
+      #   uses: actions/cache@v3
+      #   with:
       #     path: /home/runner/.cache/roc/packages
       #     key: "roc-packages"
-            
+
       - name: Build Roc app
         run: roc build tests.roc
-      
+
       # Get the browser version - it will be used as a cache key to store downloaded browser and driver
       - name: Generate browser files cache key
         id: cache-key
@@ -60,7 +60,7 @@ jobs:
       - name: Run roc tests
         id: test-run
         run: ./tests --headless
-          
+
       # Store the results in artifacts
       - name: Upload test results artifact
         uses: actions/upload-artifact@v4
@@ -68,4 +68,3 @@ jobs:
         with:
           name: results
           path: testResults/
-
